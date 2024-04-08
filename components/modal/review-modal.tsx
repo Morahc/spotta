@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CircleCheckBig } from "lucide-react";
 
 import { Modal } from "../modal";
 import { Button } from "@/components/ui/button";
@@ -17,7 +18,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Dropdown } from "../ui/dropdown";
 import { preferences } from "@/lib/data";
 import toast from "react-hot-toast";
-import { CircleCheckBig } from "lucide-react";
+import StarRating from "../star-rating";
 
 const formSchema = z.object({
   review: z.string().min(1, {
@@ -66,10 +67,6 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, setIsopen }) => {
     setIsMounted(true);
   }, []);
 
-  if (!isMounted) {
-    return null;
-  }
-
   const onClose = () => {
     setIsopen(false);
   };
@@ -91,6 +88,10 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, setIsopen }) => {
       </div>
     ));
   };
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <Modal
@@ -123,6 +124,11 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, setIsopen }) => {
             </div>
           </Dropdown>
 
+          <div className="space-y-2">
+            <p className="text-sm font-semibold">Rate location</p>
+            <StarRating />
+          </div>
+
           <FormField
             control={form.control}
             name="review"
@@ -140,6 +146,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, setIsopen }) => {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="anonymous"
@@ -158,7 +165,6 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, setIsopen }) => {
             <Button
               className="flex-grow"
               type="submit"
-              disabled={!form.formState.isValid && !form.formState.isDirty}
             >
               SUBMIT
             </Button>
